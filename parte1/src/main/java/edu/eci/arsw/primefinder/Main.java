@@ -1,5 +1,5 @@
 package edu.eci.arsw.primefinder;
-
+import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main {
@@ -25,11 +25,35 @@ public class Main {
 		}
 		//System.out.println(System.currentTimeMillis()/1000+"Tiempo");
 
-		pft1.stop();
-		pft2.stop();
-		pft3.stop();
+		pft1.suspend();
+		pft2.suspend();
+		pft3.suspend();
 
-		System.out.println(cont.get()+"Numero de primos encontrados");
+		Scanner inputScanner = new Scanner(System.in);
+		String input;
+
+		System.out.println(cont.get()+" Numero de primos encontrados");
+		System.out.print("Oprima enter para continuar la busqueda: ");
+		input = inputScanner.nextLine();
+
+		if (input.isEmpty()) {
+			pft1.resume();
+			pft2.resume();
+			pft3.resume();
+
+			try {
+				pft1.join();
+				pft2.join();
+				pft3.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+			System.out.println(cont.get()+" Numero de primos encontrados");
+
+
+		}
+
 
 
 		
